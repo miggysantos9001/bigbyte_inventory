@@ -26,5 +26,8 @@ Route::get('loadsubtwo_lf','ProductController@loadsubtwo_lf');
 Route::get('loadsubone','ProductController@loadsubone');
 Route::get('loadproducts','ProductController@loadproducts');
 
+Route::post('/product-request/add-to-cart/','ProductRequestController@addtoCart')->name('product-request.cart');
+Route::resource('/product-requests','ProductRequestController');
+
 
 
