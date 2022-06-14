@@ -22,7 +22,8 @@ class ProductRequestController extends Controller
     }
 
     public function create(){
-        //return Session::get('cart');
+        //Session::forget('cart');
+        return Session::get('cart');
         $suppliers = Supplier::orderBy('name')->get()->pluck('name','id');
         $categories = Product_category::orderBy('name')->get()->pluck('name','id');
         return view('admin.product-requests.create',compact('suppliers','categories'));
@@ -38,7 +39,9 @@ class ProductRequestController extends Controller
             
         foreach(Request::get('products') as $key => $value){
             if(!empty($value['product_id'])){
-                $cart[] = [
+                //$cart[$value['product_id']] 
+                
+                $cart[$value['product_id']] = [
                     "product_id"    =>  $value['product_id'],
                     "qty"           =>  $value['qty'],
                 ];
