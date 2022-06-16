@@ -26,7 +26,16 @@ Route::get('loadsubtwo_lf','ProductController@loadsubtwo_lf');
 Route::get('loadsubone','ProductController@loadsubone');
 Route::get('loadproducts','ProductController@loadproducts');
 
+Route::resource('products','ProductController');
+
+Route::get('/product-request/remove-to-cart/{id}','ProductRequestController@removetoCart')->name('product-request.remove-to-cart');
+Route::get('/product-request/delete-request-item/{id}','ProductRequestController@delete_request_item')->name('product-request.delete-request-item');
+Route::get('/product-request/approve-request/{id}','ProductRequestController@approveRequest')->name('product-request.approve-request');
+Route::get('/product-request/create-request','ProductRequestController@createRequest')->name('product-request.create-request');
+
+Route::post('/product-request/approve-request/{id}','ProductRequestController@store_approveRequest');
 Route::post('/product-request/add-to-cart/','ProductRequestController@addtoCart')->name('product-request.cart');
+Route::post('/product-request/create-request','ProductRequestController@storeRequest');
 Route::resource('/product-requests','ProductRequestController');
 
 

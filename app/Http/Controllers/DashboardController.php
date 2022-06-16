@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Arr;
 use Alert;
+use App\Product_request;
 use DB;
 use Auth;
 use Location;
@@ -19,7 +20,15 @@ class DashboardController extends Controller
     }
     
     public function index(){
-        return view('admin.dashboard');
+        if(Auth::user()->usertype_id == 2){
+            $requests = Product_request::where('isApproved',0)->orderBy('date','DESC')->get();
+        }else{
+            $requests = Product_request::where('isApproved',0)
+                ->where('user_id',Auth::user()->id)
+                ->orderBy('date','DESC')->get();
+        }
+        
+        return view('admin.dashboard',compact('requests'));
     }
 
     public function view_changepassword($id){

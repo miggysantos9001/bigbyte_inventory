@@ -8,7 +8,7 @@ class Product extends Model
 {
     protected $guarded = [];
 
-    public function subtwo(){
-        return $this->belongsTo('App\Product_sub_two_category','subtwo_id','id');
+    public function onhand(){
+        return $this->hasOne('App\Product_onhand','product_id','id');
     }
 }

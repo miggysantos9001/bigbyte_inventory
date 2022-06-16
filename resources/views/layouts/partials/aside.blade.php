@@ -19,6 +19,12 @@
                             <span>Dashboard</span>
                         </a>                        
                     </li>
+                    <li>
+                        <a class="nav-link" href="{{ route('product-requests.index') }}">
+                            <i class="fa fa-luggage-cart" aria-hidden="true"></i>
+                            <span>Requisition</span>
+                        </a>                        
+                    </li>
                 </ul>
             </nav>
         </div>
