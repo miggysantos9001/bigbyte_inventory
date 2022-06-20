@@ -28,6 +28,8 @@ Route::get('loadproducts','ProductController@loadproducts');
 
 Route::resource('products','ProductController');
 
+// Product Requisition
+
 Route::get('/product-request/remove-to-cart/{id}','ProductRequestController@removetoCart')->name('product-request.remove-to-cart');
 Route::get('/product-request/delete-request-item/{id}','ProductRequestController@delete_request_item')->name('product-request.delete-request-item');
 Route::get('/product-request/approve-request/{id}','ProductRequestController@approveRequest')->name('product-request.approve-request');
@@ -38,5 +40,8 @@ Route::post('/product-request/add-to-cart/','ProductRequestController@addtoCart'
 Route::post('/product-request/create-request','ProductRequestController@storeRequest');
 Route::resource('/product-requests','ProductRequestController');
 
+// Inventory
+Route::get('/product-inventory','InventoryController@index')->name('inventory.index');
+Route::post('/product-inventory','InventoryController@getResult');
 
 
