@@ -39,11 +39,58 @@ class InventoryController extends Controller
                     ->withInput();
         }
 
+        $df = Request::get('date_from');
+        $dt = Request::get('date_to');
+        $count = 1;
+        $list = [];
+
         $products = Product::with('subtwo','onhand','requisitions','delivered')->where('subtwo_id',Request::get('subtwo_id'))
             ->orderBy('description')
             ->get();
         
-        return view('admin.inventories.getResult',compact('products'));
+        foreach($products as $product){
+            $p_onhand = \App\Product_onhand::where('date','>=',$df)
+                ->where('date','<=',$dt)
+                ->where('product_id',$product->id)
+                ->sum('on_hand');
+            
+            $p_add = $product->requisitions->where('date','>=',$df)
+                ->where('date','<=',$dt)
+                ->sum('qty');
+            
+            $p_delivered = $product->delivered->where('date','>=',$df)
+                ->where('date','<=',$dt)->where('isPulledout',0)
+                ->sum('qty_delivered');
+            
+            $p_used = $product->delivered->where('date','>=',$df)
+                ->where('date','<=',$dt)->where('isPulledout',1)
+                ->sum('qty_used');
+            
+            $p_missing = $product->lost_missing->where('date','>=',$df)
+                ->where('date','<=',$dt)
+                ->sum('missing');
+            
+            $p_damage = $product->lost_missing->where('date','>=',$df)
+                ->where('date','<=',$dt)
+                ->sum('damage');
+
+            $list[] = array(
+                "count"             =>      $count,
+                "catalog_no"        =>      $product->catalog_no,
+                "description"       =>      $product->description,
+                "p_onhand"          =>      $p_onhand,
+                "p_add"             =>      $p_add,
+                "p_delivered"       =>      $p_delivered,
+                "p_used"            =>      $p_used,
+                "p_missing"         =>      $p_missing,
+                "p_damage"          =>      $p_damage,
+                "available"         =>      ($p_onhand + $p_add) - ($p_delivered + $p_used + $p_missing + $p_damage),
+            );
+
+            $count++;
+        }
+        
+        return view('admin.inventories.getResult',compact('products','df','dt','list'));
     }
 
     public function printResult(){

@@ -32,23 +32,24 @@
                                         <th class="text-center">Purchased</th>
                                         <th class="text-center">Floating</th>
                                         <th class="text-center">Used</th>
+                                        <th class="text-center">Lost</th>
+                                        <th class="text-center">Damaged</th>
                                         <th class="text-center">Available</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($products as $product)
-                                    @php
-                                        $available = ($product->onhand->on_hand + $product->requisitions->sum('qty')) - ($product->delivered->where('isPulledout',0)->sum('qty_delivered') + $product->delivered->where('isPulledout',1)->sum('qty_used'));
-                                    @endphp
+                                    @foreach($list as $l)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $product->catalog_no }}</td>
-                                        <td>{{ $product->description }}</td>
-                                        <td>{{ $product->onhand->on_hand }}</td>
-                                        <td>{{ $product->requisitions->sum('qty') }}</td>
-                                        <td>{{ $product->delivered->where('isPulledout',0)->sum('qty_delivered') }}</td>
-                                        <td>{{ $product->delivered->where('isPulledout',1)->sum('qty_used') }}</td>
-                                        <td class="text-center">{{ $available }}</td>
+                                        <td>{{ $l['count'] }}</td>
+                                        <td>{{ $l['catalog_no'] }}</td>
+                                        <td>{{ $l['description'] }}</td>
+                                        <td>{{ $l['p_onhand'] }}</td>
+                                        <td>{{ $l['p_add'] }}</td>
+                                        <td>{{ $l['p_delivered'] }}</td>
+                                        <td>{{ $l['p_used'] }}</td>
+                                        <td>{{ $l['p_missing'] }}</td>
+                                        <td>{{ $l['p_damage'] }}</td>
+                                        <td class="text-center">{{ $l['available'] }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -58,6 +59,7 @@
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-print"></i> Generate Result</button>
+                    <a href="{{ route('inventory.index') }}" class="btn btn-sm btn-success"><i class="fa fa-home"></i> Back to Index</a>
                 </div>
             </section>
             {!! Form::close() !!}

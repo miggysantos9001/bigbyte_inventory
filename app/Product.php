@@ -23,4 +23,8 @@ class Product extends Model
     public function delivered(){
         return $this->hasMany('App\Case_check_list','product_id','id');
     }
+
+    public function lost_missing(){
+        return $this->hasMany('App\Product_lost_damage_item','product_id','id');
+    }
 }

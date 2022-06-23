@@ -2,69 +2,85 @@
 @section('content')
 <section role="main" class="content-body">
     <header class="page-header">
-        <h2>Product Inventory Module</h2>
+        <h2>Product Lost & Damage Module</h2>
     </header> 
+    {!! Form::open(['method'=>'POST','action'=>'ProductMissingDamageController@store']) !!}
     <div class="row">
         <div class="col-12 mb-2">
             @include('alert')
-            {{-- <a href="{{ route('products.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i> Create Entry</a> --}}
+            <a href="{{ route('product-missing-damages.index') }}" class="btn btn-primary btn-sm"><i class="fa fa-home"></i> Back to Main</a>
         </div>
-        <div class="col-8">
-            {!! Form::open(['method'=>'POST','action'=>'InventoryController@getResult']) !!}
+        <div class="col-4">
             <section class="card">
                 <header class="card-header">
                     <div class="card-actions">
                         <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
                         <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
                     </div>
-                    <h4 class="card-title">Search Products</h4>
+                    <h4 class="card-title">Product Lost & Damage Form</h4>
                 </header>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group mb-2">
-                                {!! Form::label('','Select Date From') !!}
-                                {!! Form::date('date_from',\Carbon\Carbon::now()->toDateString(),['class'=>'form-control form-control-sm']) !!}
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group mb-2">
-                                {!! Form::label('','Select Date To') !!}
-                                {!! Form::date('date_to',\Carbon\Carbon::now()->toDateString(),['class'=>'form-control form-control-sm']) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group mb-2">
-                                {!! Form::label('','Select Category') !!}
-                                {!! Form::select('category_id',$categories,null,['class'=>'select2 form-control form-control-sm','placeholder'=>'-- Select One --','id'=>'combo1']) !!}
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group mb-2">
-                                {!! Form::label('subone_id','Select Category Level One:') !!}
-                                <select class="select2 form-control form-control-sm" name="subone_id" id="combo2">                     
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                {!! Form::label('subtwo_id','Select Category Level Two:') !!}
-                                <select class="select2 form-control form-control-sm" name="subtwo_id" id="combo3"></select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-print"></i> Generate Result</button>
-                </div>
             </section>
-            {!! Form::close() !!}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            {!! Form::label('','Date') !!}
+                            {!! Form::date('date',\Carbon\Carbon::now()->toDateString(),['class'=>'form-control form-control-sm']) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('','Select Branch') !!}
+                            {!! Form::select('branch_id',$branches,null,['class'=>'select2 form-control form-control-sm','placeholder'=>'-- Select One --','style'=>'width:100%;']) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('','Select Category') !!}
+                            {!! Form::select('category_id',$categories,null,['class'=>'select2 form-control form-control-sm','placeholder'=>'-- Select One --','id'=>'combo1','style'=>'width:100%;']) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('subone_id','Select Category Level One:') !!}
+                            <select class="select2 form-control form-control-sm" name="subone_id" id="combo2" style="width:100%;">                     
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('subtwo_id','Select Category Level Two:') !!}
+                            <select class="select2 form-control form-control-sm" name="subtwo_id" id="combo3" style="width:100%;"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <section class="card">
+                <header class="card-header">
+                    <div class="card-actions">
+                        <a href="#" class="card-action card-action-toggle" data-card-toggle></a>
+                        <a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
+                    </div>
+                    <h4 class="card-title">Select Product Items</h4>
+                </header>
+            </section>
+            <div class="card-body">
+                <table class="table table-condensed" id="prodtable" style="text-transform: uppercase;font-size: 11px;">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="50"><i class="fa fa-check"></i></th>
+                            <th class="text-center">Catalog Num</th>
+                            <th class="text-center">Product Description</th>
+                            <th class="text-center" width="50">Missing</th>
+                            <th class="text-center" width="50">Damage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save"></i> Save Entry</button>
+            </div>
         </div>
     </div>
+    {!! Form::close() !!}
 </section>
 @endsection
+
 @push('js')
 <script>
     $.ajaxSetup({
@@ -151,8 +167,11 @@
                 $("#prodtable tbody").html("");
                 $.each(response,function(index,value){
                     data = '<tr>';
+                    data += '<td align="center"><input type="checkbox" name="products['+index+'][product_id]" value="'+value.id+'" "class"="form-control" style="margin-top:5px;"></td>';
+                    data += '<td>'+value.catalog_no+'</td>';
                     data += '<td>'+value.description+'</td>';
-                    data += '<td class="text-center"><a href="products/'+value.id+'/edit" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a></td>';
+                    data += '<td><input type="text" name="products['+index+'][missing]" class="form-control form-control-sm" value="0" style="width:50px;text-align:center;" ></td>';
+                    data += '<td><input type="text" name="products['+index+'][damage]" class="form-control form-control-sm" value="0" style="width:50px;text-align:center;" ></td>';
                     data += '</tr>';
                     $("#prodtable tbody").append(data);
                 
