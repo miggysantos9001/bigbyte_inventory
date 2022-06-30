@@ -19,11 +19,24 @@
                             <span>Dashboard</span>
                         </a>                        
                     </li>
-                    <li>
-                        <a class="nav-link" href="{{ route('product-requests.index') }}">
-                            <i class="fa fa-luggage-cart" aria-hidden="true"></i>
-                            <span>Requisition</span>
-                        </a>                        
+                    <li class="nav-parent">
+                        <a class="nav-link" href="#">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span>Product Inventory</span>
+                        </a>
+                        <ul class="nav nav-children">
+                            <li>
+                                <a class="nav-link" href="{{ route('product-requests.index') }}">
+                                    Purchase Order
+                                </a>
+                                <a class="nav-link" href="{{ route('product-missing-damages.index') }}">
+                                    Missing & Damaged Products
+                                </a>
+                                <a class="nav-link" href="{{ route('inventory.index') }}">
+                                    Print Inventory List
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </nav>

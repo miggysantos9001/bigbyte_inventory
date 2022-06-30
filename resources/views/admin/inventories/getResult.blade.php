@@ -10,7 +10,10 @@
             {{-- <a href="{{ route('products.create') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus-circle"></i> Create Entry</a> --}}
         </div>
         <div class="col-12">
-            {!! Form::open(['method'=>'POST','action'=>'InventoryController@getResult']) !!}
+            {!! Form::open(['method'=>'POST','action'=>'InventoryController@printResult']) !!}
+            <input type="hidden" value="{{ $df }}" name="df">
+            <input type="hidden" value="{{ $dt }}" name="dt">
+            <input type="hidden" value="{{ $subtwo }}" name="subtwo">
             <section class="card">
                 <header class="card-header">
                     <div class="card-actions">
@@ -58,7 +61,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-print"></i> Generate Result</button>
+                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-print"></i> Print Result</button>
                     <a href="{{ route('inventory.index') }}" class="btn btn-sm btn-success"><i class="fa fa-home"></i> Back to Index</a>
                 </div>
             </section>

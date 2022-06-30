@@ -43,6 +43,7 @@ Route::resource('/product-requests','ProductRequestController');
 // Inventory
 Route::get('/product-inventory','InventoryController@index')->name('inventory.index');
 Route::post('/product-inventory','InventoryController@getResult');
+Route::post('/product-inventory/print-result','InventoryController@printResult');
 
 // Missing Damage
 Route::get('/product-missing-damage/delete-entry/{id}','ProductMissingDamageController@delete')->name('lost.delete');
